@@ -1,42 +1,49 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from 'react';
 
-// propsのテスト
-const Cat = (props) => {
-  return (<div>やあ、ミーの名前は{props.name}だにゃー。年は{props.age}だよ！</div>);
-};
-Cat.defaultProps = {
-  age: 1, 
-};
-Cat.propTypes = {
-  name: PropTypes.string, //小文字開始なのに注意
-  age: PropTypes.number.isRequired, //必須になる
-}
 
 function App() {
-  const profiles = [
-    {name: "シューちゃん", },
-    {name: "ジェラトーニ", age: 3},
-    //{name: 123}, // prop-typesが動くと、DevToolのConsoleに警告が出る
-    //{name: "いちにさん", age: "1"}, // これも警告が出る
-    {name: "エトワール", age: null}, // isRequiredの警告が出る
-    {name: "エトワール2号", age: 2}, // 正常。
-  ];
   return (
-    <div>
-      {
-        profiles.map((profile, index) => {
-          return <Cat name={profile.name} age={profile.age} key={index} />
-        })
-      }
-    </div>
+    <Counter></Counter>
   );
 }
-// 上のreturn文、profiles.map... の中も関数なのでさらにreturn と書かないとトランスパイル時にエラーになる。
-// Expected an assignment or function call and instead saw an expression...
 
-//       //<Cat name={"シューちゃん"} />
-//      //<Cat name={"ジェラトーニ"} age={"不明"} />
+class Counter extends Component {
+  constructor(props) {
+    super(props);
+    console.log("constructor", this.state);
+    this.state = {count: 0}; // stateはクラス全体でひとつのJSオブジェクト
+  }
+
+  handlePlusButton = () => {
+    console.log("プラスだよ");
+    //this.state = {count: 0};
+    // 上のようにstateを直接変更しようとするとだめ。警告を出してくれる。
+    // Line 19:5:  Do not mutate state directly. Use setState()  react/no-direct-mutation-state
+    this.setState({count: this.state.count + 1});
+  }
+
+  // 従来の関数を変数に代入する形だと実行時にエラー。アロー関数でないとthisの指す先が変わってるから？
+  //handleMinusButton = function() {
+  handleMinusButton = () => {
+    console.log("マイナスだよ");
+    this.setState({count: this.state.count - 1});
+  }
+
+  // this.setStateを呼ぶと、コールバックで指定されているrender()がその都度自動で呼ばれて再描画してくれる。
+  // Vue.jsの算出プロパティ周りと対応か。
+  //this.[data:やcomputed:のプロパティ名] でなく this.sate.[stateの中のプロパティ名] と一段深いのがめんどいかも。
+  render() {
+    console.log("@@render() 実行されたよ");
+    return (
+      <React.Fragment>
+        <div>count::: {this.state.count}</div>
+        <button onClick={this.handlePlusButton}>プラスしよう</button>
+        <button onClick={this.handleMinusButton}>マイナスしよう</button>
+      </React.Fragment>
+    
+    )
+  }
+}
 
 
 export default App;
