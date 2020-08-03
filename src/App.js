@@ -1,33 +1,33 @@
 import React from 'react';
 
-const Cat = () => {
-  return (<div>にゃー</div>);
+// propsのテスト
+const Cat = (props) => {
+  return (<div>やあ、ミーの名前は{props.name}だにゃー。年は{props.age}だよ！</div>);
+};
+Cat.defaultProps = {
+  age: 1
 };
 
 function App() {
+  const profiles = [
+    {name: "シューちゃん", },
+    {name: "ジェラトーニ", age: "不明"},
+  ];
   return (
-    <React.Fragment>
-      <header>
-        <h1>Hello, React World! my first application!! Now learning Components.</h1>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      
-      <input type="text" className="foo" onClick={() => {console.log('clicked!')}} />
-      <input type="text" className="foo" onClick={function(){console.log('old func. clicked!')}} />
-      <Cat />
-    </React.Fragment>
+    <div>
+      {
+        profiles.map((profile, index) => {
+          return <Cat name={profile.name} age={profile.age} key={index} />
+        })
+      }
+    </div>
   );
 }
+// 上のreturn文、profiles.map... の中も関数なのでさらにreturn と書かないとトランスパイル時にエラーになる。
+// Expected an assignment or function call and instead saw an expression...
+
+//       //<Cat name={"シューちゃん"} />
+//      //<Cat name={"ジェラトーニ"} age={"不明"} />
 
 
 export default App;
