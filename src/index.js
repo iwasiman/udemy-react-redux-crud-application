@@ -1,12 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore } from 'redux' // 追加
+import { Provbider} from 'react-redux'  // 追加
+
 import './index.css';
-import App from './App';
+
+import reducer from './reducers'  // 追加
+import App from './components/App';  // 移動
 import * as serviceWorker from './serviceWorker';
 
+const store = createStore(reducer)
+
+// AppコンポーネントをProviderでラップし、storeを指定。これでどのコンポーネントからもstoreが呼べるようになる。
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
