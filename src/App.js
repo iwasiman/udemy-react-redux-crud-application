@@ -1,6 +1,5 @@
 import React from 'react';
 
-// うまくいかない。書き方が間違ってる？
 const Cat = () => {
   return (<div>にゃー</div>);
 };
