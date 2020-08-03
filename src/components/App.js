@@ -1,49 +1,34 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux' //追加
+
+import { increment, decrement} from '../actions' // 追加したやつ
 
 
-function App() {
-  return (
-    <Counter></Counter>
-  );
-}
 
-class Counter extends Component {
-  constructor(props) {
-    super(props);
-    console.log("constructor", this.state);
-    this.state = {count: 0}; // stateはクラス全体でひとつのJSオブジェクト
-  }
-
-  handlePlusButton = () => {
-    console.log("プラスだよ");
-    //this.state = {count: 0};
-    // 上のようにstateを直接変更しようとするとだめ。警告を出してくれる。
-    // Line 19:5:  Do not mutate state directly. Use setState()  react/no-direct-mutation-state
-    this.setState({count: this.state.count + 1});
-  }
-
-  // 従来の関数を変数に代入する形だと実行時にエラー。アロー関数でないとthisの指す先が変わってるから？
-  //handleMinusButton = function() {
-  handleMinusButton = () => {
-    console.log("マイナスだよ");
-    this.setState({count: this.state.count - 1});
-  }
-
-  // this.setStateを呼ぶと、コールバックで指定されているrender()がその都度自動で呼ばれて再描画してくれる。
-  // Vue.jsの算出プロパティ周りと対応か。
-  //this.[data:やcomputed:のプロパティ名] でなく this.sate.[stateの中のプロパティ名] と一段深いのがめんどいかも。
+class App extends Component {
   render() {
-    console.log("@@render() 実行されたよ");
+    const props = this.props;
+
     return (
       <React.Fragment>
-        <div>count::: {this.state.count}</div>
-        <button onClick={this.handlePlusButton}>プラスしよう</button>
-        <button onClick={this.handleMinusButton}>マイナスしよう</button>
+        <div>value::: {props.value}</div>
+        <button onClick={props.increment}>プラスしよう</button>
+        <button onClick={props.decrement}>マイナスしよう</button>
       </React.Fragment>
     
     )
   }
 }
 
+const mapStateToProps = state => ({ value: state.count.value});
+// これだとdispatchがundefinedとか出た
+// const mapDispatchToProps = disaptch => ({
+//   increment: () => dispatch(increment()),
+//   decrement: () => dispatch(decrement()),
+// })
 
-export default App;
+//react-reduxのマニュアルにも書いてある省略記法パターン
+const mapDispatchToProps = ({ increment, decrement});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
+

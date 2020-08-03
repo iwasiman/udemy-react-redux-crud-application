@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux' // 追加
-import { Provbider} from 'react-redux'  // 追加
+import { Provider} from 'react-redux'  // 追加
 
 import './index.css';
 
