@@ -9,12 +9,12 @@ import reducer from './reducers'  // 追加
 import App from './components/App';  // 移動
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(reducer)
+const storeVar = createStore(reducer); //ここでRedux側の仕組みでStoreを作って変数に入れる
 
-// AppコンポーネントをProviderでラップし、storeを指定。これでどのコンポーネントからもstoreが呼べるようになる。
+// AppコンポーネントをProviderでラップし、storeを指定。これで画面内どのコンポーネントからも、バケツリレーなしでstoreが直接呼べるようになる。
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={storeVar}>
       <App />
     </Provider>
   </React.StrictMode>,
