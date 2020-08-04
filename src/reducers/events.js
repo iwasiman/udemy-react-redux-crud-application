@@ -1,4 +1,9 @@
-import { CONST_INCREMENT, CONST_DECREMENT, CONST_READ_EVENTS} from '../actions'
+import {
+  CONST_INCREMENT,
+  CONST_DECREMENT,
+  CONST_READ_EVENTS,
+  CONST_DELETE_EVENT
+} from '../actions'
 import _ from 'lodash' // 配列操作が得意
 
 const initialState = { cntValue: 0};
@@ -17,6 +22,12 @@ export default (events = initialState, action) => {
       const adjustedData = _.mapKeys(action.response.data, "id");
       console.log("lodashでキーがid -> オブジェクト の連想配列に再配置", adjustedData);
       return adjustedData;
+    case CONST_DELETE_EVENT:
+      //console.log(action.id); //ここで渡ってくる。
+      //これをしないと削除後、一覧に戻ると消した行がメモリ上に残っている。
+      delete events[action.id];
+      // スプレッド演算子で新しいメモリ空間上に変数events内のJSオブジェクトを再配置。
+      return { ...events};
     default:
       return events;
   }

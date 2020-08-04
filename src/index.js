@@ -4,15 +4,20 @@ import { createStore, applyMiddleware } from 'redux' // 追加 redux-thunkはミ
 import { Provider} from 'react-redux'  // 追加
 import thunk from 'redux-thunk' // 追加 ReduxのActionsで非同期処理用
 import {BrowserRouter, Route, Switch} from 'react-router-dom' //新規画面への繊維とか
+import { composeWithDevTools } from 'redux-devtools-extension' // デバッグツール
 
 import './index.css';
 
 import reducer from './reducers'  // 追加
 import EventsIndex from './components/events_index';  // 移動
-import EventsNew from './components/events_new';  // routerで使う
+import EventsNew from './components/events_new';  // routerで使う新規画面
+import EventsShow from './components/events_show';  // routerで使う更新画面
 import * as serviceWorker from './serviceWorker';
 
-const storeVar = createStore(reducer, applyMiddleware(thunk)); //ここでRedux側の仕組みでStoreを作って変数に入れる
+// モードが開発なら、enhancerをデバッグツールの関数でラップして囲む
+const enhancer = process.env.NODE_ENV === 'development' ?
+composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk);
+const storeVar = createStore(reducer, enhancer); //ここでRedux側の仕組みでStoreを作って変数に入れる
 // セクション5 第2引数で指定することで、redux-thunkを使用
 
 // AppコンポーネントをProviderでラップし、storeを指定。これで画面内どのコンポーネントからも、バケツリレーなしでstoreが直接呼べるようになる。
@@ -22,8 +27,10 @@ ReactDOM.render(
     <Provider store={storeVar}>
       <BrowserRouter>
         <Switch>
-          <Route exact path="/events/new" component={EventsNew} />
+          <Route path="/events/new" component={EventsNew} />
+          <Route path="/events/:id" component={EventsShow} />
           <Route exact path="/" component={EventsIndex} />
+          <Route exact path="/events" component={EventsIndex} />
         </Switch>
       </BrowserRouter>
     </Provider>

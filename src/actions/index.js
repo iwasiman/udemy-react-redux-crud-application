@@ -27,6 +27,7 @@ export const decrementAction = () => ({
 
 export const CONST_READ_EVENTS = 'CONST_READ_EVENTS_VAL';
 export const CONST_CREATE_EVENT = 'CONST_CREATE_EVENT_VAL';
+export const CONST_DELETE_EVENT = 'CONST_DELETE_EVENT_VAL';
 
 const ROOT_URL = "https://udemy-utils.herokuapp.com/api/v1";
 const QUERYSTRING = "?token=token123";
@@ -51,3 +52,10 @@ export const postEventAction = (values) => async (dispatch) => {
   console.log("** axiosのpost通信終わり", response);
   dispatch({type: CONST_CREATE_EVENT, response: response});
 }
+
+export const deleteEventAction = (id) => async (dispatch) => {
+  // 削除の実処理はここだけ。すごい。
+  await axios.delete(`${ROOT_URL}/events/${id}${QUERYSTRING}`);
+  dispatch({type: CONST_DELETE_EVENT, id});
+}
+

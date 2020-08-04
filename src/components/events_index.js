@@ -18,10 +18,15 @@ class EventsIndex extends Component {
   renderEvents() {
     // this.props.eventsに、reducerの戻り値で返された10件が入っている。これも不思議な動き。
     // TODO: keyが効かない。なぜ？
+    // Link to のあとはシングルクオートでなく`に注意。
     return _.map(this.props.events, event => (
       <tr key={event.id} >
         <td>{event.id}</td>
-        <td>{event.title}</td>
+        <td>
+          <Link to={`/events/${event.id}`} >
+            {event.title}
+          </Link>
+        </td>
         <td>{event.body}</td>
       </tr>
 
