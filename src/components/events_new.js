@@ -38,8 +38,9 @@ class EventsNew extends Component {
   render() {
     // render()内に来る時点で、propsの中に定義した値やActionが入っている。
     console.log("@@ EventsNew#render() in. this.props", this.props);
-
-    const {handleSubmit } = this.props;
+    // pristineは画面の未入力状態を判別できる
+    // submittingはサブミットしている状態ならtrueになる。二重押し防止に使える。
+    const {handleSubmit, pristine, submitting } = this.props;
 
     return (
       <React.Fragment>
@@ -50,7 +51,7 @@ class EventsNew extends Component {
           </div>
 
           <div>
-            <input type="submit" value="送信するよ" disabled={false} />
+            <input type="submit" value="送信するよ" disabled={pristine || submitting} />
             <Link to="/" >キャンセル</Link>
           </div>
 
