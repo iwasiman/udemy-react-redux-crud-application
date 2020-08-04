@@ -40,7 +40,7 @@ class EventsNew extends Component {
     console.log("@@ EventsNew#render() in. this.props", this.props);
     // pristineは画面の未入力状態を判別できる
     // submittingはサブミットしている状態ならtrueになる。二重押し防止に使える。
-    const {handleSubmit, pristine, submitting } = this.props;
+    const {handleSubmit, pristine, submitting, invalid } = this.props;
 
     return (
       <React.Fragment>
@@ -51,7 +51,7 @@ class EventsNew extends Component {
           </div>
 
           <div>
-            <input type="submit" value="送信するよ" disabled={pristine || submitting} />
+            <input type="submit" value="送信するよ" disabled={pristine || submitting || invalid} />
             <Link to="/" >キャンセル</Link>
           </div>
 

@@ -28,6 +28,8 @@ export const decrementAction = () => ({
 export const CONST_READ_EVENTS = 'CONST_READ_EVENTS_VAL';
 export const CONST_CREATE_EVENT = 'CONST_CREATE_EVENT_VAL';
 export const CONST_DELETE_EVENT = 'CONST_DELETE_EVENT_VAL';
+export const CONST_READ_EVENT = 'CONST_READ_EVENT_VAL';
+export const CONST_UPDATE_EVENT = 'CONST_UPDATE_EVENT_VAL';
 
 const ROOT_URL = "https://udemy-utils.herokuapp.com/api/v1";
 const QUERYSTRING = "?token=token123";
@@ -54,8 +56,21 @@ export const postEventAction = (values) => async (dispatch) => {
 }
 
 export const deleteEventAction = (id) => async (dispatch) => {
-  // 削除の実処理はここだけ。すごい。
+  // 削除の実処理はここだけ。
   await axios.delete(`${ROOT_URL}/events/${id}${QUERYSTRING}`);
   dispatch({type: CONST_DELETE_EVENT, id});
 }
 
+export const getEventAction = (id) => async (dispatch) => {
+  console.log("** getEventAction in");
+  // 1件取得の実処理はここだけ。
+  const response = await axios.get(`${ROOT_URL}/events/${id}${QUERYSTRING}`);
+  dispatch({type: CONST_READ_EVENT, response});
+}
+
+export const putEventAction = (values) => async (dispatch) => {
+  console.log("** putEventAction in");
+  // 1件更新の実処理はここだけ。
+  const response = await axios.put(`${ROOT_URL}/events/${values.id}${QUERYSTRING}`, values);
+  dispatch({type: CONST_UPDATE_EVENT, response});
+}
