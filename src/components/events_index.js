@@ -3,6 +3,7 @@ import { connect } from 'react-redux' //追加
 
 import { readEventsAction} from '../actions' // 追加したやつ
 import _ from 'lodash' // 配列操作用
+import { Link } from 'react-router-dom' //新規画面用
 
 
 
@@ -16,12 +17,12 @@ class EventsIndex extends Component {
 
   renderEvents() {
     // this.props.eventsに、reducerの戻り値で返された10件が入っている。これも不思議な動き。
+    // TODO: keyが効かない。なぜ？
     return _.map(this.props.events, event => (
-      <tr key={event.id}>
+      <tr key={event.id} >
         <td>{event.id}</td>
         <td>{event.title}</td>
         <td>{event.body}</td>
-
       </tr>
 
     ));
@@ -30,12 +31,10 @@ class EventsIndex extends Component {
   render() {
     // render()内に来る時点で、propsの中にcntValue, 関数が入ったincrementSction, decrementActionが入っている。これがクリックで呼ばれる。
     console.log("@@ EventsIndex#render() in. this.props", this.props);
-    const props = this.props;
 
     return (
       <React.Fragment>
         <h1>EventsIndex React * Reduxを連携させたデータ取得アプリケーションだよ</h1>
-        <div>value::: {props.cntValue}</div>
         <table border="1">
           <thead>
             <tr>
@@ -48,6 +47,8 @@ class EventsIndex extends Component {
             {this.renderEvents()}
           </tbody>
         </table>
+
+        <Link to="/events/new">新しいイベント！</Link>
       </React.Fragment>
     
     )
