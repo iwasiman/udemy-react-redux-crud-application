@@ -5,7 +5,20 @@ import { readEventsAction} from '../actions' // 追加したやつ
 import _ from 'lodash' // 配列操作用
 import { Link } from 'react-router-dom' //新規画面用
 
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper'; //ない？
 
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
 
 class EventsIndex extends Component {
   componentDidMount() {
@@ -20,15 +33,15 @@ class EventsIndex extends Component {
     // TODO: keyが効かない。なぜ？
     // Link to のあとはシングルクオートでなく`に注意。
     return _.map(this.props.events, event => (
-      <tr key={event.id} >
-        <td>{event.id}</td>
-        <td>
+      <TableRow key={event.id} >
+        <TableCell>{event.id}</TableCell>
+        <TableCell>
           <Link to={`/events/${event.id}`} >
             {event.title}
           </Link>
-        </td>
-        <td>{event.body}</td>
-      </tr>
+        </TableCell>
+        <TableCell>{event.body}</TableCell>
+      </TableRow>
 
     ));
   }
@@ -37,21 +50,27 @@ class EventsIndex extends Component {
     // render()内に来る時点で、propsの中にcntValue, 関数が入ったincrementSction, decrementActionが入っている。これがクリックで呼ばれる。
     console.log("@@ EventsIndex#render() in. this.props", this.props);
 
+    const classes = useStyles();
+
+
     return (
       <React.Fragment>
         <h1>EventsIndex React * Reduxを連携させたデータ取得アプリケーションだよ</h1>
-        <table border="1">
-          <thead>
-            <tr>
-              <td>IDだよ</td>
-              <td>たいとる</td>
-              <td>ボディ</td>
-            </tr>
-          </thead>
-          <tbody>
-            {this.renderEvents()}
-          </tbody>
-        </table>
+
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>IDだよ</TableCell>
+                <TableCell>たいとる</TableCell>
+                <TableCell>ボディ</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.renderEvents()}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         <Link to="/events/new">新しいイベント！</Link>
       </React.Fragment>
